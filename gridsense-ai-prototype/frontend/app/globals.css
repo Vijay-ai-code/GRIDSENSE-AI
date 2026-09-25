@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+
+    /* Layered Dark Color Scale */
+    --bg-base: #0A0A0A;
+    --bg-elevated: #121212;
+    --bg-elevated-hover: #171717;
+    --border-subtle: #232323;
+    --border-hover: #2E2E2E;
+
+    /* Text hierarchy */
+    --text-primary: #F2F2F0;
+    --text-secondary: #9A9A9A;
+    --text-tertiary: #5C5C5C;
+
+    /* Deliberate Accent (Deep Red) */
+    --accent: #A82020;
+    --accent-subtle: rgba(168, 32, 32, 0.08);
+    --accent-tint: rgba(168, 32, 32, 0.15);
+
+    /* Desaturated Status Indicators */
+    --status-success: #6B8A6B;
+    --status-warning: #B8860B;
+    --status-critical: #A82020;
+    --status-info: #5C5C5C;
+
+    /* Fonts wired to Next font variables */
+    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono-data: 'JetBrains Mono', monospace;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono-data {
+  font-family: var(--font-mono-data);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom micro-interactions */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+button, input {
+  font: inherit;
+}

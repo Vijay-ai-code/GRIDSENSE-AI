@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: gridsense_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: gridsense_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: gridsense_backend
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgresql://postgres:postgrespassword@postgres:5432/gridsense_db
+      ML_SERVICE_URL: http://ml-service:8000
+      RAG_SERVICE_URL: http://rag-service:8001
+      FRONTEND_ORIGIN: http://localhost:3000
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+
+  ml-service:
+    build: ./ml-service
+    container_name: gridsense_ml
+    ports:
+      - "8000:8000"
+
+  rag-service:
+    build: ./rag-service
+    container_name: gridsense_rag
+    ports:
+      - "8001:8001"
+
+  frontend:
+    build: ./frontend
+    container_name: gridsense_frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
